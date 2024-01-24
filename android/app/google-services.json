@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "869554311538",
+    "project_id": "location-explorer-assignment",
+    "storage_bucket": "location-explorer-assignment.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:869554311538:android:450700e05fcd843815cdeb",
+        "android_client_info": {
+          "package_name": "com.example.locationexplorer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "869554311538-6gonm1e4ghqbi2alperet77mqe36l11m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDnWuwPyYJ9sBd13fi2-pon4wSmPRqS0lY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "869554311538-6gonm1e4ghqbi2alperet77mqe36l11m.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "869554311538-oc9foc10kljq10eu276lvl52js3gf52r.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.locationexplorer"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
