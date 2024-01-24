@@ -111,13 +111,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
           const SizedBox(
             height: 10,
           ),
-          const Text(
-            'or',
-            style: TextStyle(fontSize: 20),
-          ),
-          const SizedBox(
-            height: 10,
-          ),
+          // const Text(
+          //   'or',
+          //   style: TextStyle(fontSize: 20),
+          // ),
+          // const SizedBox(
+          //   height: 10,
+          // ),
           //The custom auth system requires custom token which is not currently available so this feature can be implemented
           // ElevatedButton(
           //     style: const ButtonStyle(
