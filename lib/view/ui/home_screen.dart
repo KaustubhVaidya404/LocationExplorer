@@ -1,5 +1,7 @@
+import 'package:camera/camera.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:locationexplorer/view/ui/camera_screen.dart';
 import 'package:locationexplorer/view/ui/sign_up_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -48,7 +50,14 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton.large(
-        onPressed: () {},
+        onPressed: () async {
+          await availableCameras().then((value) => Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (_) => CameraScreen(
+                        camera: value,
+                      ))));
+        },
         backgroundColor: floatingActionButtonColor,
         child: const Icon(Icons.add_location_alt_outlined),
       ),
