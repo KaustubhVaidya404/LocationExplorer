@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:locationexplorer/utilities/app_colors.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:locationexplorer/view/ui/home_screen.dart';
 import 'package:locationexplorer/view/ui/sign_in_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -87,7 +89,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           .createUserWithEmailAndPassword(
                               email: emailinputcontroller.text,
                               password: passwordcontroller.text);
-                      //TODO: Route to main page
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => HomeScreen(),
+                          ));
+                      final SharedPreferences sharedPreferences =
+                          await SharedPreferences.getInstance();
+                      sharedPreferences.setBool('state', true);
                     } on FirebaseAuthException catch (error) {
                       if (error.code == 'weak-password') {
                         ScaffoldMessenger.of(context)
@@ -117,7 +126,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           //     style: const ButtonStyle(
           //         backgroundColor:
           //             MaterialStatePropertyAll(elevatedButtonColor)),
-          //     onPressed: () {}, //TODO: google auth sign up
+          //     onPressed: () {},
           //     child: const Text('Google',
           //         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25))),
           Row(
@@ -126,10 +135,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
               const Text('Already have an account?'),
               TextButton(
                   onPressed: () {
-                    Navigator.push(
+                    Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const SignInScreen()));
+                          builder: (context) => SignInScreen(),
+                        ));
                   },
                   child: const Text(
                     'Sign In',
