@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:locationexplorer/utilities/app_colors.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:locationexplorer/view/ui/home_screen.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -23,7 +24,6 @@ class _SignInScreenState extends State<SignInScreen> {
     const nouserfound = SnackBar(content: Text("No user found for that email"));
     const wrongpassword =
         SnackBar(content: Text('Wrong password provided for that user.'));
-
     return Scaffold(
       backgroundColor: backGroundBlue,
       appBar: AppBar(
@@ -31,9 +31,9 @@ class _SignInScreenState extends State<SignInScreen> {
         elevation: 0,
         title: Container(
           padding: const EdgeInsets.all(2),
-          decoration: BoxDecoration(
-              border: Border.all(color: appBarDecoration),
-              borderRadius: BorderRadius.circular(5)),
+          // decoration: BoxDecoration(
+          //     border: Border.all(color: appBarDecoration),
+          //     borderRadius: BorderRadius.circular(5)),
           child: const Text(
             'Location Explorer',
             style: TextStyle(fontSize: 25, color: appBarFontBlack),
@@ -62,6 +62,7 @@ class _SignInScreenState extends State<SignInScreen> {
             height: 18,
           ),
           TextField(
+            obscureText: true,
             controller: passwordcontroller,
             decoration: const InputDecoration(
               hintText: "password",
@@ -84,7 +85,10 @@ class _SignInScreenState extends State<SignInScreen> {
                           .signInWithEmailAndPassword(
                               email: emailinputcontroller.text,
                               password: passwordcontroller.text);
-                      //TODO: Route to main page
+                      // Navigator.push(
+                      //     context,
+                      //     MaterialPageRoute(
+                      //         builder: (context) => const HomeScreen()));
                     } on FirebaseAuthException catch (e) {
                       if (e.code == 'user-not-found') {
                         ScaffoldMessenger.of(context).showSnackBar(nouserfound);
@@ -92,6 +96,8 @@ class _SignInScreenState extends State<SignInScreen> {
                         ScaffoldMessenger.of(context)
                             .showSnackBar(wrongpassword);
                       }
+                    } catch (error) {
+                      debugPrint(error.toString());
                     }
                   } else {
                     ScaffoldMessenger.of(context)
@@ -103,30 +109,16 @@ class _SignInScreenState extends State<SignInScreen> {
               },
               child: const Text('Sign In',
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25))),
-          // const SizedBox(
-          //   height: 10,
-          // ),
-          // const Text(
-          //   'or',
-          //   style: TextStyle(fontSize: 20),
-          // ),
-          // const SizedBox(
-          //   height: 10,
-          // ),
-          // Row(
-          //   mainAxisAlignment: MainAxisAlignment.center,
-          //   children: [
-          //     const Text('Already have an account?'),
-          //     TextButton(
-          //         onPressed: () {}, //TODO: Add the route for login screen
-          //         child: const Text(
-          //           'Sign In',
-          //           style: TextStyle(fontWeight: FontWeight.bold),
-          //         ))
-          //   ],
-          // )
+          //TODO: add a forgot password feature
         ]),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    emailinputcontroller.dispose();
+    passwordcontroller.dispose();
+    super.dispose();
   }
 }

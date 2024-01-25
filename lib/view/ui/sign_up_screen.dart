@@ -33,9 +33,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
         elevation: 0,
         title: Container(
           padding: const EdgeInsets.all(2),
-          decoration: BoxDecoration(
-              border: Border.all(color: appBarDecoration),
-              borderRadius: BorderRadius.circular(5)),
+          // decoration: BoxDecoration(
+          //     border: Border.all(color: appBarDecoration),
+          //     borderRadius: BorderRadius.circular(5)),
           child: const Text(
             'Location Explorer',
             style: TextStyle(fontSize: 25, color: appBarFontBlack),
@@ -64,6 +64,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             height: 18,
           ),
           TextField(
+            obscureText: true,
             controller: passwordcontroller,
             decoration: const InputDecoration(
               hintText: "password",
@@ -111,13 +112,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
           const SizedBox(
             height: 10,
           ),
-          // const Text(
-          //   'or',
-          //   style: TextStyle(fontSize: 20),
-          // ),
-          // const SizedBox(
-          //   height: 10,
-          // ),
           //The custom auth system requires custom token which is not currently available so this feature can be implemented
           // ElevatedButton(
           //     style: const ButtonStyle(
@@ -136,7 +130,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         context,
                         MaterialPageRoute(
                             builder: (context) => const SignInScreen()));
-                  }, //TODO: Add the route for login screen
+                  },
                   child: const Text(
                     'Sign In',
                     style: TextStyle(fontWeight: FontWeight.bold),
@@ -146,5 +140,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
         ]),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    emailinputcontroller.dispose();
+    passwordcontroller.dispose();
+    super.dispose();
   }
 }
