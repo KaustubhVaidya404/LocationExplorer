@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:locationexplorer/view/ui/address_screen.dart';
 
 import '../../utilities/app_colors.dart';
 
@@ -31,7 +32,12 @@ class ImagePreview extends StatelessWidget {
             height: 35,
           ),
           ElevatedButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => AddressScreen(image: image)));
+            },
             child: Icon(
               Icons.arrow_circle_right_outlined,
               size: 45,
