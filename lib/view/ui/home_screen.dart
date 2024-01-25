@@ -1,4 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:locationexplorer/view/ui/sign_up_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../utilities/app_colors.dart';
 
@@ -19,12 +22,61 @@ class _HomeScreenState extends State<HomeScreen> {
         elevation: 0,
         title: Container(
           padding: const EdgeInsets.all(2),
-          child: const Text(
-            'Location Explorer',
-            style: TextStyle(fontSize: 25, color: appBarFontBlack),
+          child: Row(
+            children: [
+              const Text(
+                'Location Explorer',
+                style: TextStyle(fontSize: 25, color: appBarFontBlack),
+              ),
+              Flexible(
+                flex: 1,
+                child: Container(),
+              ),
+              ElevatedButton(
+                onPressed: () {},
+                style: const ButtonStyle(
+                    elevation: MaterialStatePropertyAll(0),
+                    backgroundColor: MaterialStatePropertyAll(backGroundBlue)),
+                child: const Icon(
+                  Icons.favorite,
+                  color: Colors.black,
+                ),
+              )
+            ],
           ),
         ),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: FloatingActionButton.large(
+        onPressed: () {},
+        backgroundColor: floatingActionButtonColor,
+        child: const Icon(Icons.add_location_alt_outlined),
+      ),
+      drawer: Drawer(
+          shadowColor: Colors.black,
+          backgroundColor: drawerBC,
+          child: ListView(
+            children: [
+              ListTile(
+                contentPadding: const EdgeInsets.all(10),
+                leading: const Icon(Icons.logout),
+                title: const Text(
+                  'Sign out',
+                  style: TextStyle(fontSize: 20),
+                ),
+                onTap: () async {
+                  await FirebaseAuth.instance.signOut();
+                  final SharedPreferences sharedPreferences =
+                      await SharedPreferences.getInstance();
+                  sharedPreferences.setBool('state', false);
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const SignUpScreen()));
+                },
+              )
+            ],
+          )),
     );
   }
 }
