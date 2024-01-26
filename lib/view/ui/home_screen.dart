@@ -17,6 +17,12 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
+    String? email;
+    if (FirebaseAuth.instance.currentUser != null) {
+      setState(() {
+        email = FirebaseAuth.instance.currentUser!.email;
+      });
+    } else {}
     return Scaffold(
       backgroundColor: backGroundBlue,
       appBar: AppBar(
@@ -68,6 +74,14 @@ class _HomeScreenState extends State<HomeScreen> {
             children: [
               ListTile(
                 contentPadding: const EdgeInsets.all(10),
+                leading: const Icon(Icons.person),
+                title: Text(
+                  "$email",
+                  style: const TextStyle(fontSize: 20),
+                ),
+              ),
+              ListTile(
+                contentPadding: const EdgeInsets.all(10),
                 leading: const Icon(Icons.logout),
                 title: const Text(
                   'Sign out',
@@ -83,7 +97,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       MaterialPageRoute(
                           builder: (context) => const SignUpScreen()));
                 },
-              )
+              ),
             ],
           )),
     );
