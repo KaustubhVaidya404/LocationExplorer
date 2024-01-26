@@ -5,7 +5,7 @@ import 'package:locationexplorer/view/ui/camera_screen.dart';
 import 'package:locationexplorer/view/ui/sign_up_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../utilities/app_colors.dart';
+import '../../config/app_colors.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});

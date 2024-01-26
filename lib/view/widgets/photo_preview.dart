@@ -4,7 +4,7 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:locationexplorer/view/ui/address_screen.dart';
 
-import '../../utilities/app_colors.dart';
+import '../../config/app_colors.dart';
 
 class ImagePreview extends StatelessWidget {
   const ImagePreview({super.key, required this.image});

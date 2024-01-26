@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:locationexplorer/utilities/app_colors.dart';
+import 'package:locationexplorer/config/app_colors.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:locationexplorer/utilities/firebase_auth_credential.dart';
 import 'package:locationexplorer/view/ui/home_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -22,9 +23,7 @@ class _SignInScreenState extends State<SignInScreen> {
     const emailSnackBar = SnackBar(
         content: Text(
             'Please enter email address or try checking the validity of email address'));
-    const nouserfound = SnackBar(content: Text("No user found for that email"));
-    const wrongpassword =
-        SnackBar(content: Text('Wrong password provided for that user.'));
+
     return Scaffold(
       backgroundColor: backGroundBlue,
       appBar: AppBar(
@@ -81,29 +80,8 @@ class _SignInScreenState extends State<SignInScreen> {
                     EmailValidator.validate(emailinputcontroller.text);
                 if (isEmailValid == true) {
                   if (passwordcontroller.text.isNotEmpty) {
-                    try {
-                      final credential = await FirebaseAuth.instance
-                          .signInWithEmailAndPassword(
-                              email: emailinputcontroller.text,
-                              password: passwordcontroller.text);
-                      Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => HomeScreen(),
-                          ));
-                      final SharedPreferences sharedPreferences =
-                          await SharedPreferences.getInstance();
-                      sharedPreferences.setBool('state', true);
-                    } on FirebaseAuthException catch (e) {
-                      if (e.code == 'user-not-found') {
-                        ScaffoldMessenger.of(context).showSnackBar(nouserfound);
-                      } else if (e.code == 'wrong-password') {
-                        ScaffoldMessenger.of(context)
-                            .showSnackBar(wrongpassword);
-                      }
-                    } catch (error) {
-                      debugPrint(error.toString());
-                    }
+                    firebase_cred(emailinputcontroller.text,
+                        passwordcontroller.text, context);
                   } else {
                     ScaffoldMessenger.of(context)
                         .showSnackBar(passwordSnackBar);

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:locationexplorer/utilities/app_colors.dart';
+import 'package:locationexplorer/config/app_colors.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:locationexplorer/utilities/firebase_auth_credential.dart';
 import 'package:locationexplorer/view/ui/home_screen.dart';
 import 'package:locationexplorer/view/ui/sign_in_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -23,10 +24,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
     const emailSnackBar = SnackBar(
         content: Text(
             'Please enter email address or try checking the validity of email address'));
-    const passwordweak =
-        SnackBar(content: Text('The password provided is too weak.'));
-    const accountexist =
-        SnackBar(content: Text('The account already exists for that email.'));
 
     return Scaffold(
       backgroundColor: backGroundBlue,
@@ -84,30 +81,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     EmailValidator.validate(emailinputcontroller.text);
                 if (isEmailValid == true) {
                   if (passwordcontroller.text.isNotEmpty) {
-                    try {
-                      final credential = await FirebaseAuth.instance
-                          .createUserWithEmailAndPassword(
-                              email: emailinputcontroller.text,
-                              password: passwordcontroller.text);
-                      Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => HomeScreen(),
-                          ));
-                      final SharedPreferences sharedPreferences =
-                          await SharedPreferences.getInstance();
-                      sharedPreferences.setBool('state', true);
-                    } on FirebaseAuthException catch (error) {
-                      if (error.code == 'weak-password') {
-                        ScaffoldMessenger.of(context)
-                            .showSnackBar(passwordweak);
-                      } else if (error.code == 'email-already-in-use') {
-                        ScaffoldMessenger.of(context)
-                            .showSnackBar(accountexist);
-                      }
-                    } catch (e) {
-                      print(e);
-                    }
+                    firebase_cred(emailinputcontroller.text,
+                        passwordcontroller.text, context);
                   } else {
                     ScaffoldMessenger.of(context)
                         .showSnackBar(passwordSnackBar);

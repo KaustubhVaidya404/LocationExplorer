@@ -1,7 +1,7 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 
-import '../../utilities/app_colors.dart';
+import '../../config/app_colors.dart';
 
 class AddressScreen extends StatefulWidget {
   const AddressScreen({super.key, required this.image});
