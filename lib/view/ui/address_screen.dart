@@ -25,6 +25,8 @@ class _AddressScreenState extends State<AddressScreen> {
 
   var db = FirebaseFirestore.instance;
   String? email;
+  var latitude;
+  var longitude;
   FirebaseStorage storage = FirebaseStorage.instance;
   TextEditingController placename = TextEditingController();
   TextEditingController street = TextEditingController();
