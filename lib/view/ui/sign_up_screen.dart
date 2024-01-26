@@ -81,7 +81,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     EmailValidator.validate(emailinputcontroller.text);
                 if (isEmailValid == true) {
                   if (passwordcontroller.text.isNotEmpty) {
-                    firebase_cred(emailinputcontroller.text,
+                    firebase_cred_up(emailinputcontroller.text,
                         passwordcontroller.text, context);
                   } else {
                     ScaffoldMessenger.of(context)

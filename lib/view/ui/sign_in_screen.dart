@@ -80,7 +80,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     EmailValidator.validate(emailinputcontroller.text);
                 if (isEmailValid == true) {
                   if (passwordcontroller.text.isNotEmpty) {
-                    firebase_cred(emailinputcontroller.text,
+                    firebase_cred_in(emailinputcontroller.text,
                         passwordcontroller.text, context);
                   } else {
                     ScaffoldMessenger.of(context)
