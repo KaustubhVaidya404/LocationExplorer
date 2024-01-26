@@ -54,7 +54,8 @@ class _AddressScreenState extends State<AddressScreen> {
     sendLocation(Position position) {
       final locationData = {
         "latitude": position.latitude,
-        "longitude": position.longitude
+        "longitude": position.longitude,
+        "fav": false
       };
       uploadImage();
       db.collection(email!).doc(placename.text).set(locationData);
@@ -213,6 +214,7 @@ class _AddressScreenState extends State<AddressScreen> {
                         "city": city.text,
                         "state": state.text,
                         "zipcode": zipcode.text,
+                        "fav": false
                       };
                       db
                           .collection(email!)
