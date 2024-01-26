@@ -5,8 +5,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:locationexplorer/view/ui/home_screen.dart';
-import 'package:locationexplorer/view/ui/map_address.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import '../../config/app_colors.dart';
 
@@ -26,8 +27,6 @@ class _AddressScreenState extends State<AddressScreen> {
 
   var db = FirebaseFirestore.instance;
   String? email;
-  var latitude;
-  var longitude;
   FirebaseStorage storage = FirebaseStorage.instance;
   TextEditingController placename = TextEditingController();
   TextEditingController street = TextEditingController();
@@ -45,6 +44,34 @@ class _AddressScreenState extends State<AddressScreen> {
       final path = 'images/$email/$placenamestr/$fileName';
       final ref = FirebaseStorage.instance.ref().child(path);
       ref.putFile(file);
+    }
+
+    navigation() {
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => const HomeScreen()));
+    }
+
+    sendLocation(Position position) {
+      final locationData = {
+        "latitude": position.latitude,
+        "longitude": position.longitude
+      };
+      uploadImage();
+      db.collection(email!).doc(placename.text).set(locationData);
+    }
+
+    actionFunction() async {
+      if (FirebaseAuth.instance.currentUser != null) {
+        setState(() {
+          email = FirebaseAuth.instance.currentUser!.email;
+        });
+      }
+      ;
+
+      await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.low)
+          .then((Position position) {
+        sendLocation(position);
+      }).then((_) => navigation());
     }
 
     final SnackBar errorsnackBar =
@@ -67,16 +94,50 @@ class _AddressScreenState extends State<AddressScreen> {
                 child: Container(),
               ),
               ElevatedButton(
-                  onPressed: () {
-                    Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const AddressOnMap()));
+                  onPressed: () async {
+                    if (await Permission.location.isGranted) {
+                      if (placename.text.isNotEmpty) {
+                        actionFunction();
+                      } else {
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) => AlertDialog(
+                                  backgroundColor: dialogBC,
+                                  actions: [
+                                    const Center(
+                                      child: Text(
+                                        'Save location as?',
+                                        style: TextStyle(
+                                            fontSize: 25,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                    TextField(
+                                      controller: placename,
+                                      decoration: const InputDecoration(
+                                          hintText:
+                                              "eg. Favourite Place, Sweet Home"),
+                                    ),
+                                    TextButton(
+                                        onPressed: () {
+                                          actionFunction();
+                                          Navigator.pop(context);
+                                        },
+                                        child: const Text('OK')),
+                                  ],
+                                ));
+                      }
+                    } else {
+                      await Geolocator.requestPermission();
+                      if (await Permission.location.isDenied) {
+                        await Geolocator.requestPermission();
+                      }
+                    }
                   },
                   style: const ButtonStyle(
                       backgroundColor:
                           MaterialStatePropertyAll(elevatedButtonColor)),
-                  child: const Text('Open Map',
+                  child: const Text('Pin Location',
                       style: TextStyle(
                           fontWeight: FontWeight.bold, fontSize: 25))),
             ],
@@ -158,10 +219,7 @@ class _AddressScreenState extends State<AddressScreen> {
                           .doc(placename.text)
                           .set(addressData);
                       uploadImage();
-                      Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const HomeScreen()));
+                      navigation();
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(errorsnackBar);
                     }
