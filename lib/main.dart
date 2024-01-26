@@ -4,7 +4,6 @@ import 'package:locationexplorer/firebase_options.dart';
 import 'package:locationexplorer/view/ui/home_screen.dart';
 import 'package:locationexplorer/view/ui/sign_up_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-// import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

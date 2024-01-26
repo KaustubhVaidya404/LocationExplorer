@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:locationexplorer/view/ui/home_screen.dart';
+import 'package:locationexplorer/view/ui/map_address.dart';
 
 import '../../config/app_colors.dart';
 
@@ -66,7 +67,12 @@ class _AddressScreenState extends State<AddressScreen> {
                 child: Container(),
               ),
               ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const AddressOnMap()));
+                  },
                   style: const ButtonStyle(
                       backgroundColor:
                           MaterialStatePropertyAll(elevatedButtonColor)),
