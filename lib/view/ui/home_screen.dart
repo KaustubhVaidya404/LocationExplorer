@@ -23,6 +23,12 @@ class _HomeScreenState extends State<HomeScreen> {
         email = FirebaseAuth.instance.currentUser!.email;
       });
     } else {}
+
+    navigator() {
+      Navigator.pushReplacement(context,
+          MaterialPageRoute(builder: (context) => const SignUpScreen()));
+    }
+
     return Scaffold(
       backgroundColor: backGroundBlue,
       appBar: AppBar(
@@ -92,10 +98,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   final SharedPreferences sharedPreferences =
                       await SharedPreferences.getInstance();
                   sharedPreferences.setBool('state', false);
-                  Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const SignUpScreen()));
+                  navigator();
                 },
               ),
             ],

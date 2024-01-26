@@ -9,16 +9,19 @@ const passwordweak =
 const accountexist =
     SnackBar(content: Text('The account already exists for that email.'));
 
-void firebase_cred_up(
-    String email, String password, BuildContext context) async {
+navigator(BuildContext context) {
+  Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => HomeScreen(),
+      ));
+}
+
+void firebaseCredUp(String email, String password, BuildContext context) async {
   try {
     final credential = await FirebaseAuth.instance
         .createUserWithEmailAndPassword(email: email, password: password);
-    Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => HomeScreen(),
-        ));
+    navigator(context);
     final SharedPreferences sharedPreferences =
         await SharedPreferences.getInstance();
     sharedPreferences.setBool('state', true);
@@ -38,11 +41,7 @@ void firebase_cred_in(
   try {
     final credential = await FirebaseAuth.instance
         .signInWithEmailAndPassword(email: email, password: password);
-    Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => HomeScreen(),
-        ));
+    navigator(context);
     final SharedPreferences sharedPreferences =
         await SharedPreferences.getInstance();
     sharedPreferences.setBool('state', true);

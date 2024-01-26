@@ -38,13 +38,13 @@ class ImagePreview extends StatelessWidget {
                   MaterialPageRoute(
                       builder: (context) => AddressScreen(image: image)));
             },
-            child: Icon(
-              Icons.arrow_circle_right_outlined,
-              size: 45,
-            ),
             style: const ButtonStyle(
                 elevation: MaterialStatePropertyAll(0),
                 backgroundColor: MaterialStatePropertyAll(backGroundBlue)),
+            child: const Icon(
+              Icons.arrow_circle_right_outlined,
+              size: 45,
+            ),
           ),
         ]),
       ),

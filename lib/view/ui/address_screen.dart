@@ -22,7 +22,7 @@ class AddressScreen extends StatefulWidget {
 class _AddressScreenState extends State<AddressScreen> {
   late XFile addressimage;
   _AddressScreenState(XFile image) {
-    this.addressimage = image;
+    addressimage = image;
   }
 
   var db = FirebaseFirestore.instance;
@@ -67,7 +67,6 @@ class _AddressScreenState extends State<AddressScreen> {
           email = FirebaseAuth.instance.currentUser!.email;
         });
       }
-      ;
 
       await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.low)
           .then((Position position) {
@@ -75,7 +74,77 @@ class _AddressScreenState extends State<AddressScreen> {
       }).then((_) => navigation());
     }
 
-    final SnackBar errorsnackBar =
+    actionManual() {
+      final addressData = {
+        "street": street.text,
+        "landmark": landmark.text,
+        "city": city.text,
+        "state": state.text,
+        "zipcode": zipcode.text,
+        "fav": false
+      };
+      db.collection(email!).doc(placename.text).set(addressData);
+      uploadImage();
+      navigation();
+    }
+
+    dialogFunPick() {
+      showDialog(
+          context: context,
+          builder: (BuildContext context) => AlertDialog(
+                backgroundColor: dialogBC,
+                actions: [
+                  const Center(
+                    child: Text(
+                      'Save location as?',
+                      style:
+                          TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  TextField(
+                    controller: placename,
+                    decoration: const InputDecoration(
+                        hintText: "eg. Favourite Place, Sweet Home"),
+                  ),
+                  TextButton(
+                      onPressed: () {
+                        actionFunction();
+                        Navigator.pop(context);
+                      },
+                      child: const Text('OK')),
+                ],
+              ));
+    }
+
+    dialogFunManual() {
+      showDialog(
+          context: context,
+          builder: (BuildContext context) => AlertDialog(
+                backgroundColor: dialogBC,
+                actions: [
+                  const Center(
+                    child: Text(
+                      'Save location as?',
+                      style:
+                          TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  TextField(
+                    controller: placename,
+                    decoration: const InputDecoration(
+                        hintText: "eg. Favourite Place, Sweet Home"),
+                  ),
+                  TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                        actionManual();
+                      },
+                      child: const Text('OK')),
+                ],
+              ));
+    }
+
+    const SnackBar errorsnackBar =
         SnackBar(content: Text("All feilds are mandatory"));
     return Scaffold(
       backgroundColor: backGroundBlue,
@@ -100,33 +169,7 @@ class _AddressScreenState extends State<AddressScreen> {
                       if (placename.text.isNotEmpty) {
                         actionFunction();
                       } else {
-                        showDialog(
-                            context: context,
-                            builder: (BuildContext context) => AlertDialog(
-                                  backgroundColor: dialogBC,
-                                  actions: [
-                                    const Center(
-                                      child: Text(
-                                        'Save location as?',
-                                        style: TextStyle(
-                                            fontSize: 25,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    ),
-                                    TextField(
-                                      controller: placename,
-                                      decoration: const InputDecoration(
-                                          hintText:
-                                              "eg. Favourite Place, Sweet Home"),
-                                    ),
-                                    TextButton(
-                                        onPressed: () {
-                                          actionFunction();
-                                          Navigator.pop(context);
-                                        },
-                                        child: const Text('OK')),
-                                  ],
-                                ));
+                        dialogFunPick();
                       }
                     } else {
                       await Geolocator.requestPermission();
@@ -203,55 +246,18 @@ class _AddressScreenState extends State<AddressScreen> {
                     });
                   }
                   if (placename.text.isNotEmpty) {
+                    actionManual();
                     if (street.text.isNotEmpty ||
                         landmark.text.isNotEmpty ||
                         city.text.isNotEmpty ||
                         state.text.isNotEmpty ||
                         zipcode.text.isNotEmpty) {
-                      final addressData = {
-                        "street": street.text,
-                        "landmark": landmark.text,
-                        "city": city.text,
-                        "state": state.text,
-                        "zipcode": zipcode.text,
-                        "fav": false
-                      };
-                      db
-                          .collection(email!)
-                          .doc(placename.text)
-                          .set(addressData);
-                      uploadImage();
-                      navigation();
+                      actionManual();
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(errorsnackBar);
                     }
                   } else {
-                    showDialog(
-                        context: context,
-                        builder: (BuildContext context) => AlertDialog(
-                              backgroundColor: dialogBC,
-                              actions: [
-                                const Center(
-                                  child: Text(
-                                    'Save location as?',
-                                    style: TextStyle(
-                                        fontSize: 25,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ),
-                                TextField(
-                                  controller: placename,
-                                  decoration: const InputDecoration(
-                                      hintText:
-                                          "eg. Favourite Place, Sweet Home"),
-                                ),
-                                TextButton(
-                                    onPressed: () {
-                                      Navigator.pop(context);
-                                    },
-                                    child: const Text('OK')),
-                              ],
-                            ));
+                    dialogFunManual();
                   }
                 },
                 style: const ButtonStyle(

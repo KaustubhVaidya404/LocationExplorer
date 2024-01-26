@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:locationexplorer/config/app_colors.dart';
 import 'package:email_validator/email_validator.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:locationexplorer/utilities/firebase_auth_credential.dart';
-import 'package:locationexplorer/view/ui/home_screen.dart';
 import 'package:locationexplorer/view/ui/sign_in_screen.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -81,7 +78,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     EmailValidator.validate(emailinputcontroller.text);
                 if (isEmailValid == true) {
                   if (passwordcontroller.text.isNotEmpty) {
-                    firebase_cred_up(emailinputcontroller.text,
+                    firebaseCredUp(emailinputcontroller.text,
                         passwordcontroller.text, context);
                   } else {
                     ScaffoldMessenger.of(context)

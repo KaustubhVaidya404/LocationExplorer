@@ -14,6 +14,11 @@ class _CameraScreenState extends State<CameraScreen> {
   late CameraController _cameraController;
   bool _isRealCameraSelected = true;
 
+  navigator(XFile picture) {
+    Navigator.pushReplacement(context,
+        MaterialPageRoute(builder: (context) => ImagePreview(image: picture)));
+  }
+
   @override
   void initState() {
     initCamera(widget.camera![0]);
@@ -43,10 +48,7 @@ class _CameraScreenState extends State<CameraScreen> {
     try {
       await _cameraController.setFlashMode(FlashMode.off);
       XFile picture = await _cameraController.takePicture();
-      Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-              builder: (context) => ImagePreview(image: picture)));
+      navigator(picture);
     } on CameraException catch (e) {
       debugPrint('Error occured while taking picture: $e');
       return null;
@@ -93,7 +95,11 @@ class _CameraScreenState extends State<CameraScreen> {
                   iconSize: 50,
                   padding: EdgeInsets.zero,
                   constraints: const BoxConstraints(),
-                  icon: const Icon(Icons.circle, color: Colors.white),
+                  icon: const Icon(
+                    Icons.circle,
+                    color: Colors.white,
+                    size: 60,
+                  ),
                 )),
                 const Spacer(),
               ]),
