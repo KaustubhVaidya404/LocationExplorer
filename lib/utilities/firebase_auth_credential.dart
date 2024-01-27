@@ -19,7 +19,7 @@ navigator(BuildContext context) {
 
 void firebaseCredUp(String email, String password, BuildContext context) async {
   try {
-    final credential = await FirebaseAuth.instance
+    await FirebaseAuth.instance
         .createUserWithEmailAndPassword(email: email, password: password);
     navigator(context);
     final SharedPreferences sharedPreferences =
@@ -39,7 +39,7 @@ void firebaseCredUp(String email, String password, BuildContext context) async {
 void firebase_cred_in(
     String email, String password, BuildContext context) async {
   try {
-    final credential = await FirebaseAuth.instance
+    await FirebaseAuth.instance
         .signInWithEmailAndPassword(email: email, password: password);
     navigator(context);
     final SharedPreferences sharedPreferences =

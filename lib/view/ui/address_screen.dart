@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:locationexplorer/view/ui/home_screen.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -33,7 +34,7 @@ class _AddressScreenState extends State<AddressScreen> {
   TextEditingController landmark = TextEditingController();
   TextEditingController city = TextEditingController();
   TextEditingController state = TextEditingController();
-  TextEditingController zipcode = TextEditingController();
+  TextEditingController country = TextEditingController();
   @override
   Widget build(BuildContext context) {
     Future uploadImage() async {
@@ -61,6 +62,17 @@ class _AddressScreenState extends State<AddressScreen> {
       db.collection(email!).doc(placename.text).set(locationData);
     }
 
+    sendManualLocation(Location location) {
+      final locationData = {
+        "latitude": location.latitude,
+        "longitude": location.longitude,
+        "fav": false
+      };
+      uploadImage();
+      db.collection(email!).doc(placename.text).set(locationData);
+      navigation();
+    }
+
     actionFunction() async {
       if (FirebaseAuth.instance.currentUser != null) {
         setState(() {
@@ -74,18 +86,11 @@ class _AddressScreenState extends State<AddressScreen> {
       }).then((_) => navigation());
     }
 
-    actionManual() {
-      final addressData = {
-        "street": street.text,
-        "landmark": landmark.text,
-        "city": city.text,
-        "state": state.text,
-        "zipcode": zipcode.text,
-        "fav": false
-      };
-      db.collection(email!).doc(placename.text).set(addressData);
-      uploadImage();
-      navigation();
+    actionManual() async {
+      List<Location> locationsList = await locationFromAddress(
+          '${street.text},${landmark.text},${city.text},${state.text},${country.text}');
+      final Location location = locationsList[0];
+      sendManualLocation(location);
     }
 
     dialogFunPick() {
@@ -234,9 +239,9 @@ class _AddressScreenState extends State<AddressScreen> {
               height: 5,
             ),
             TextField(
-              controller: zipcode,
+              controller: country,
               decoration: const InputDecoration(
-                  border: OutlineInputBorder(), hintText: "zipcode"),
+                  border: OutlineInputBorder(), hintText: "country"),
             ),
             ElevatedButton(
                 onPressed: () async {
@@ -251,7 +256,7 @@ class _AddressScreenState extends State<AddressScreen> {
                         landmark.text.isNotEmpty ||
                         city.text.isNotEmpty ||
                         state.text.isNotEmpty ||
-                        zipcode.text.isNotEmpty) {
+                        country.text.isNotEmpty) {
                       actionManual();
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(errorsnackBar);
