@@ -128,13 +128,15 @@ class _HomeScreenState extends State<HomeScreen> {
             List<QueryDocumentSnapshot> listQueryDocSnapshot =
                 querySnapshot.docs;
 
-            return ListView.builder(
-              itemCount: listQueryDocSnapshot.length,
-              itemBuilder: (context, index) {
-                QueryDocumentSnapshot doc = listQueryDocSnapshot[index];
-                return StoreListItems(documentSnapshot: doc);
-              },
-            );
+            return ListView.separated(
+                itemBuilder: (context, index) {
+                  QueryDocumentSnapshot doc = listQueryDocSnapshot[index];
+                  return StoreListItems(documentSnapshot: doc);
+                },
+                separatorBuilder: (context, index) {
+                  return const Divider();
+                },
+                itemCount: listQueryDocSnapshot.length);
           } else {
             return const CircularProgressIndicator();
           }
