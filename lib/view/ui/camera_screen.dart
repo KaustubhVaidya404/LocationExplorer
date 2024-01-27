@@ -21,8 +21,8 @@ class _CameraScreenState extends State<CameraScreen> {
 
   @override
   void initState() {
-    initCamera(widget.camera![0]);
     super.initState();
+    initCamera(widget.camera![0]);
   }
 
   Future initCamera(CameraDescription cameraDescription) async {

@@ -1,8 +1,10 @@
 import 'package:camera/camera.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:locationexplorer/view/ui/camera_screen.dart';
 import 'package:locationexplorer/view/ui/sign_up_screen.dart';
+import 'package:locationexplorer/view/widgets/store_item_list.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../config/app_colors.dart';
@@ -15,18 +17,29 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  String? email;
+
+  navigator() {
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => const SignUpScreen()));
+  }
+
+  late Stream firestoreData;
+
+  @override
+  void initState() {
+    super.initState();
+    firestoreData = FirebaseFirestore.instance
+        .collection(FirebaseAuth.instance.currentUser!.email!)
+        .snapshots();
+  }
+
   @override
   Widget build(BuildContext context) {
-    String? email;
     if (FirebaseAuth.instance.currentUser != null) {
       setState(() {
         email = FirebaseAuth.instance.currentUser!.email;
       });
-    } else {}
-
-    navigator() {
-      Navigator.pushReplacement(context,
-          MaterialPageRoute(builder: (context) => const SignUpScreen()));
     }
 
     return Scaffold(
@@ -103,6 +116,30 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ],
           )),
+      body: StreamBuilder(
+        stream: firestoreData,
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          if (snapshot.hasError) {
+            return const Text(
+                'Something went wrong, please check your internet connection');
+          }
+          if (snapshot.connectionState == ConnectionState.active) {
+            QuerySnapshot querySnapshot = snapshot.data;
+            List<QueryDocumentSnapshot> listQueryDocSnapshot =
+                querySnapshot.docs;
+
+            return ListView.builder(
+              itemCount: listQueryDocSnapshot.length,
+              itemBuilder: (context, index) {
+                QueryDocumentSnapshot doc = listQueryDocSnapshot[index];
+                return StoreListItems(documentSnapshot: doc);
+              },
+            );
+          } else {
+            return const CircularProgressIndicator();
+          }
+        },
+      ),
     );
   }
 }
