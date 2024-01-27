@@ -193,85 +193,88 @@ class _AddressScreenState extends State<AddressScreen> {
           ),
         ),
       ),
-      body: Container(
-        padding: const EdgeInsets.all(18),
-        alignment: Alignment.center,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text(
-              'Add location manually',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(
-              height: 5,
-            ),
-            TextField(
-              controller: street,
-              decoration: const InputDecoration(
-                  border: OutlineInputBorder(), hintText: "Street"),
-            ),
-            const SizedBox(
-              height: 5,
-            ),
-            TextField(
-              controller: landmark,
-              decoration: const InputDecoration(
-                  border: OutlineInputBorder(), hintText: "landmark"),
-            ),
-            const SizedBox(
-              height: 5,
-            ),
-            TextField(
-              controller: city,
-              decoration: const InputDecoration(
-                  border: OutlineInputBorder(), hintText: "city"),
-            ),
-            const SizedBox(
-              height: 5,
-            ),
-            TextField(
-              controller: state,
-              decoration: const InputDecoration(
-                  border: OutlineInputBorder(), hintText: "state"),
-            ),
-            const SizedBox(
-              height: 5,
-            ),
-            TextField(
-              controller: country,
-              decoration: const InputDecoration(
-                  border: OutlineInputBorder(), hintText: "country"),
-            ),
-            ElevatedButton(
-                onPressed: () async {
-                  if (FirebaseAuth.instance.currentUser != null) {
-                    setState(() {
-                      email = FirebaseAuth.instance.currentUser!.email;
-                    });
-                  }
-                  if (placename.text.isNotEmpty) {
-                    actionManual();
-                    if (street.text.isNotEmpty ||
-                        landmark.text.isNotEmpty ||
-                        city.text.isNotEmpty ||
-                        state.text.isNotEmpty ||
-                        country.text.isNotEmpty) {
-                      actionManual();
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(errorsnackBar);
+      body: SafeArea(
+        child: Container(
+          padding: const EdgeInsets.all(18),
+          alignment: Alignment.center,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text(
+                'Add location manually',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(
+                height: 5,
+              ),
+              TextField(
+                controller: street,
+                decoration: const InputDecoration(
+                    border: OutlineInputBorder(), hintText: "Street"),
+              ),
+              const SizedBox(
+                height: 5,
+              ),
+              TextField(
+                controller: landmark,
+                decoration: const InputDecoration(
+                    border: OutlineInputBorder(), hintText: "landmark"),
+              ),
+              const SizedBox(
+                height: 5,
+              ),
+              TextField(
+                controller: city,
+                decoration: const InputDecoration(
+                    border: OutlineInputBorder(), hintText: "city"),
+              ),
+              const SizedBox(
+                height: 5,
+              ),
+              TextField(
+                controller: state,
+                decoration: const InputDecoration(
+                    border: OutlineInputBorder(), hintText: "state"),
+              ),
+              const SizedBox(
+                height: 5,
+              ),
+              TextField(
+                controller: country,
+                decoration: const InputDecoration(
+                    border: OutlineInputBorder(), hintText: "country"),
+              ),
+              ElevatedButton(
+                  onPressed: () async {
+                    if (FirebaseAuth.instance.currentUser != null) {
+                      setState(() {
+                        email = FirebaseAuth.instance.currentUser!.email;
+                      });
                     }
-                  } else {
-                    dialogFunManual();
-                  }
-                },
-                style: const ButtonStyle(
-                    backgroundColor:
-                        MaterialStatePropertyAll(elevatedButtonColor)),
-                child: const Text('Proceed',
-                    style:
-                        TextStyle(fontWeight: FontWeight.bold, fontSize: 25))),
-          ],
+                    if (placename.text.isNotEmpty) {
+                      actionManual();
+                      if (street.text.isNotEmpty ||
+                          landmark.text.isNotEmpty ||
+                          city.text.isNotEmpty ||
+                          state.text.isNotEmpty ||
+                          country.text.isNotEmpty) {
+                        actionManual();
+                      } else {
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(errorsnackBar);
+                      }
+                    } else {
+                      dialogFunManual();
+                    }
+                  },
+                  style: const ButtonStyle(
+                      backgroundColor:
+                          MaterialStatePropertyAll(elevatedButtonColor)),
+                  child: const Text('Proceed',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 25))),
+            ],
+          ),
         ),
       ),
     );

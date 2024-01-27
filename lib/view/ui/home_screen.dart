@@ -59,16 +59,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 flex: 1,
                 child: Container(),
               ),
-              ElevatedButton(
-                onPressed: () {},
-                style: const ButtonStyle(
-                    elevation: MaterialStatePropertyAll(0),
-                    backgroundColor: MaterialStatePropertyAll(backGroundBlue)),
-                child: const Icon(
-                  Icons.favorite,
-                  color: Colors.black,
-                ),
-              )
             ],
           ),
         ),

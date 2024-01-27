@@ -25,28 +25,30 @@ class ImagePreview extends StatelessWidget {
           ),
         ),
       ),
-      body: Center(
-        child: Column(mainAxisSize: MainAxisSize.min, children: [
-          Image.file(File(image.path), fit: BoxFit.fill, width: 250),
-          const SizedBox(
-            height: 35,
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => AddressScreen(image: image)));
-            },
-            style: const ButtonStyle(
-                elevation: MaterialStatePropertyAll(0),
-                backgroundColor: MaterialStatePropertyAll(backGroundBlue)),
-            child: const Icon(
-              Icons.arrow_circle_right_outlined,
-              size: 45,
+      body: SafeArea(
+        child: Center(
+          child: Column(mainAxisSize: MainAxisSize.min, children: [
+            Image.file(File(image.path), fit: BoxFit.fill, width: 350),
+            const SizedBox(
+              height: 35,
             ),
-          ),
-        ]),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => AddressScreen(image: image)));
+              },
+              style: const ButtonStyle(
+                  elevation: MaterialStatePropertyAll(0),
+                  backgroundColor: MaterialStatePropertyAll(backGroundBlue)),
+              child: const Icon(
+                Icons.arrow_circle_right_outlined,
+                size: 45,
+              ),
+            ),
+          ]),
+        ),
       ),
     );
   }

@@ -38,88 +38,91 @@ class _SignUpScreenState extends State<SignUpScreen> {
           ),
         ),
       ),
-      body: Container(
-        // decoration: BoxDecoration(border: Border.all(color: Colors.black)),
-        margin: const EdgeInsets.all(15),
-        alignment: Alignment.center,
-        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-          const Text(
-            "Sign Up",
-            style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(
-            height: 18,
-          ),
-          TextField(
-            controller: emailinputcontroller,
-            decoration: const InputDecoration(
-              hintText: "email address",
+      body: SafeArea(
+        child: Container(
+          // decoration: BoxDecoration(border: Border.all(color: Colors.black)),
+          margin: const EdgeInsets.all(15),
+          alignment: Alignment.center,
+          child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+            const Text(
+              "Sign Up",
+              style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold),
             ),
-          ),
-          const SizedBox(
-            height: 18,
-          ),
-          TextField(
-            obscureText: true,
-            controller: passwordcontroller,
-            decoration: const InputDecoration(
-              hintText: "password",
+            const SizedBox(
+              height: 18,
             ),
-          ),
-          const SizedBox(
-            height: 18,
-          ),
-          ElevatedButton(
-              style: const ButtonStyle(
-                  backgroundColor:
-                      MaterialStatePropertyAll(elevatedButtonColor)),
-              onPressed: () async {
-                var isEmailValid =
-                    EmailValidator.validate(emailinputcontroller.text);
-                if (isEmailValid == true) {
-                  if (passwordcontroller.text.isNotEmpty) {
-                    firebaseCredUp(emailinputcontroller.text,
-                        passwordcontroller.text, context);
+            TextField(
+              controller: emailinputcontroller,
+              decoration: const InputDecoration(
+                hintText: "email address",
+              ),
+            ),
+            const SizedBox(
+              height: 18,
+            ),
+            TextField(
+              obscureText: true,
+              controller: passwordcontroller,
+              decoration: const InputDecoration(
+                hintText: "password",
+              ),
+            ),
+            const SizedBox(
+              height: 18,
+            ),
+            ElevatedButton(
+                style: const ButtonStyle(
+                    backgroundColor:
+                        MaterialStatePropertyAll(elevatedButtonColor)),
+                onPressed: () async {
+                  var isEmailValid =
+                      EmailValidator.validate(emailinputcontroller.text);
+                  if (isEmailValid == true) {
+                    if (passwordcontroller.text.isNotEmpty) {
+                      firebaseCredUp(emailinputcontroller.text,
+                          passwordcontroller.text, context);
+                    } else {
+                      ScaffoldMessenger.of(context)
+                          .showSnackBar(passwordSnackBar);
+                    }
                   } else {
-                    ScaffoldMessenger.of(context)
-                        .showSnackBar(passwordSnackBar);
+                    ScaffoldMessenger.of(context).showSnackBar(emailSnackBar);
                   }
-                } else {
-                  ScaffoldMessenger.of(context).showSnackBar(emailSnackBar);
-                }
-              },
-              child: const Text('Sign Up',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25))),
-          const SizedBox(
-            height: 10,
-          ),
-          //The custom auth system requires custom token which is not currently available so this feature can be implemented
-          // ElevatedButton(
-          //     style: const ButtonStyle(
-          //         backgroundColor:
-          //             MaterialStatePropertyAll(elevatedButtonColor)),
-          //     onPressed: () {},
-          //     child: const Text('Google',
-          //         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25))),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text('Already have an account?'),
-              TextButton(
-                  onPressed: () {
-                    Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => SignInScreen(),
-                        ));
-                  },
-                  child: const Text(
-                    'Sign In',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ))
-            ],
-          )
-        ]),
+                },
+                child: const Text('Sign Up',
+                    style:
+                        TextStyle(fontWeight: FontWeight.bold, fontSize: 25))),
+            const SizedBox(
+              height: 10,
+            ),
+            //The custom auth system requires custom token which is not currently available so this feature can be implemented
+            // ElevatedButton(
+            //     style: const ButtonStyle(
+            //         backgroundColor:
+            //             MaterialStatePropertyAll(elevatedButtonColor)),
+            //     onPressed: () {},
+            //     child: const Text('Google',
+            //         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25))),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text('Already have an account?'),
+                TextButton(
+                    onPressed: () {
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => SignInScreen(),
+                          ));
+                    },
+                    child: const Text(
+                      'Sign In',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ))
+              ],
+            )
+          ]),
+        ),
       ),
     );
   }
