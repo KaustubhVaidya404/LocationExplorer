@@ -83,8 +83,14 @@ class _StoreListItemsState extends State<StoreListItems> {
                       }
                     },
                     child: favstate == true
-                        ? const Icon(Icons.favorite)
-                        : const Icon(Icons.favorite_border)),
+                        ? const Icon(
+                            Icons.favorite,
+                            color: favColor,
+                          )
+                        : const Icon(
+                            Icons.favorite_border,
+                            color: favBorderColor,
+                          )),
               ),
             )));
   }

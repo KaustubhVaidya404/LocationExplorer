@@ -74,7 +74,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ))));
         },
         backgroundColor: floatingActionButtonColor,
-        child: const Icon(Icons.add_location_alt_outlined),
+        child: const Icon(Icons.camera),
       ),
       drawer: Drawer(
           shadowColor: Colors.black,

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:locationexplorer/view/ui/address_screen.dart';
+import 'package:locationexplorer/view/ui/home_screen.dart';
 
 import '../../config/app_colors.dart';
 
@@ -32,20 +33,44 @@ class ImagePreview extends StatelessWidget {
             const SizedBox(
               height: 35,
             ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => AddressScreen(image: image)));
-              },
-              style: const ButtonStyle(
-                  elevation: MaterialStatePropertyAll(0),
-                  backgroundColor: MaterialStatePropertyAll(backGroundBlue)),
-              child: const Icon(
-                Icons.arrow_circle_right_outlined,
-                size: 45,
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const HomeScreen()));
+                  },
+                  style: const ButtonStyle(
+                      elevation: MaterialStatePropertyAll(0),
+                      backgroundColor:
+                          MaterialStatePropertyAll(backGroundBlue)),
+                  child: const Icon(
+                    Icons.arrow_circle_left_outlined,
+                    color: previewButtonColor,
+                    size: 45,
+                  ),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => AddressScreen(image: image)));
+                  },
+                  style: const ButtonStyle(
+                      elevation: MaterialStatePropertyAll(0),
+                      backgroundColor:
+                          MaterialStatePropertyAll(backGroundBlue)),
+                  child: const Icon(
+                    Icons.arrow_circle_right_outlined,
+                    color: previewButtonColor,
+                    size: 45,
+                  ),
+                ),
+              ],
             ),
           ]),
         ),

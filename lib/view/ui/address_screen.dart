@@ -53,13 +53,18 @@ class _AddressScreenState extends State<AddressScreen> {
     }
 
     sendLocation(Position position) {
-      final locationData = {
-        "latitude": position.latitude,
-        "longitude": position.longitude,
-        "fav": false
-      };
-      uploadImage();
-      db.collection(email!).doc(placename.text).set(locationData);
+      if (placename.text.isEmpty) {
+        const SnackBar error = SnackBar(content: Text('Cancel'));
+        ScaffoldMessenger.of(context).showSnackBar(error);
+      } else {
+        final locationData = {
+          "latitude": position.latitude,
+          "longitude": position.longitude,
+          "fav": false
+        };
+        uploadImage();
+        db.collection(email!).doc(placename.text).set(locationData);
+      }
     }
 
     sendManualLocation(Location location) {
@@ -86,11 +91,22 @@ class _AddressScreenState extends State<AddressScreen> {
       }).then((_) => navigation());
     }
 
+    const SnackBar reuiredSnack =
+        SnackBar(content: Text('All feilds are mandatory'));
+
     actionManual() async {
-      List<Location> locationsList = await locationFromAddress(
-          '${street.text},${landmark.text},${city.text},${state.text},${country.text}');
-      final Location location = locationsList[0];
-      sendManualLocation(location);
+      if (street.text.isNotEmpty &&
+          landmark.text.isNotEmpty &&
+          city.text.isNotEmpty &&
+          state.text.isNotEmpty &&
+          country.text.isNotEmpty) {
+        List<Location> locationsList = await locationFromAddress(
+            '${street.text},${landmark.text},${city.text},${state.text},${country.text}');
+        final Location location = locationsList[0];
+        sendManualLocation(location);
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(reuiredSnack);
+      }
     }
 
     dialogFunPick() {
@@ -186,7 +202,7 @@ class _AddressScreenState extends State<AddressScreen> {
                   style: const ButtonStyle(
                       backgroundColor:
                           MaterialStatePropertyAll(elevatedButtonColor)),
-                  child: const Text('Pin Location',
+                  child: const Text('📍️ Pin',
                       style: TextStyle(
                           fontWeight: FontWeight.bold, fontSize: 25))),
             ],
@@ -244,35 +260,54 @@ class _AddressScreenState extends State<AddressScreen> {
                 decoration: const InputDecoration(
                     border: OutlineInputBorder(), hintText: "country"),
               ),
-              ElevatedButton(
-                  onPressed: () async {
-                    if (FirebaseAuth.instance.currentUser != null) {
-                      setState(() {
-                        email = FirebaseAuth.instance.currentUser!.email;
-                      });
-                    }
-                    if (placename.text.isNotEmpty) {
-                      actionManual();
-                      if (street.text.isNotEmpty ||
-                          landmark.text.isNotEmpty ||
-                          city.text.isNotEmpty ||
-                          state.text.isNotEmpty ||
-                          country.text.isNotEmpty) {
-                        actionManual();
-                      } else {
-                        ScaffoldMessenger.of(context)
-                            .showSnackBar(errorsnackBar);
-                      }
-                    } else {
-                      dialogFunManual();
-                    }
-                  },
-                  style: const ButtonStyle(
-                      backgroundColor:
-                          MaterialStatePropertyAll(elevatedButtonColor)),
-                  child: const Text('Proceed',
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 25))),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const HomeScreen()));
+                      },
+                      style: const ButtonStyle(
+                          backgroundColor:
+                              MaterialStatePropertyAll(sliderDeleteColor)),
+                      child: const Text('Cancel',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 25))),
+                  const SizedBox(width: 12),
+                  ElevatedButton(
+                      onPressed: () async {
+                        if (FirebaseAuth.instance.currentUser != null) {
+                          setState(() {
+                            email = FirebaseAuth.instance.currentUser!.email;
+                          });
+                        }
+                        if (placename.text.isNotEmpty) {
+                          actionManual();
+                          if (street.text.isNotEmpty ||
+                              landmark.text.isNotEmpty ||
+                              city.text.isNotEmpty ||
+                              state.text.isNotEmpty ||
+                              country.text.isNotEmpty) {
+                            actionManual();
+                          } else {
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(errorsnackBar);
+                          }
+                        } else {
+                          dialogFunManual();
+                        }
+                      },
+                      style: const ButtonStyle(
+                          backgroundColor:
+                              MaterialStatePropertyAll(elevatedButtonColor)),
+                      child: const Text('Proceed',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 25))),
+                ],
+              ),
             ],
           ),
         ),
