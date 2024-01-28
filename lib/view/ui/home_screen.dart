@@ -85,7 +85,7 @@ class _HomeScreenState extends State<HomeScreen> {
           child: ListView(
             children: [
               ListTile(
-                contentPadding: const EdgeInsets.all(10),
+                contentPadding: const EdgeInsets.symmetric(horizontal: 10),
                 leading: const Icon(Icons.person),
                 title: Text(
                   "$email",
@@ -93,7 +93,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
               ListTile(
-                contentPadding: const EdgeInsets.all(10),
+                contentPadding: const EdgeInsets.symmetric(horizontal: 10),
                 leading: const Icon(Icons.logout),
                 title: const Text(
                   'Sign out',
